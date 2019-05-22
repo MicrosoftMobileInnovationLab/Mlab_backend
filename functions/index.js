@@ -1,7 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const express = require('express');
-
 var cors = require('cors');
 var bodyParser = require('body-parser');
 
