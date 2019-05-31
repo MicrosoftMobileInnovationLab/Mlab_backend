@@ -1,15 +1,7 @@
 const firebase = require('firebase-admin')
 const db = firebase.firestore()
-var cors = require('cors')
-var bodyParser = require('body-parser')
 
 module.exports = (app) => {
-  app.use(cors())
-  app.use(bodyParser.urlencoded({
-    extended: true
-  }))
-  app.use(bodyParser.json())
-
   app.post('/api/v1/addProject', (req, res) => {
     // TODO: Verify the generated token.
     try {

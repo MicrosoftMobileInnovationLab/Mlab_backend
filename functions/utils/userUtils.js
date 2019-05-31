@@ -2,11 +2,16 @@ const CryptoJS = require('crypto-js')
 const atob = require('atob')
 const btoa = require('btoa')
 const jwt = require('jsonwebtoken')
-var config = require('./config')
+const uuid = require('uuid/v1')
+var config = require('./../config')
 
 const redirectBaseUrl = config.redirectBaseUrl
 const appId = config.appId
 const secretkey = config.secretkey
+
+const generateUuid = () => {
+  return uuid()
+}
 
 const queryStringToJSON = (queryString) => {
   if (queryString.indexOf('?') > -1) {
@@ -96,4 +101,4 @@ const getRedirectUrl = (nonce, returnUrl) => {
   return redirectUrl
 }
 
-module.exports = { shuffle, queryStringToJSON, generateSig, verifySignature, generateToken, jwtVerify, getRedirectUrl, b64DecodeUnicode, b64EncodeUnicode }
+module.exports = { shuffle, queryStringToJSON, generateSig, verifySignature, generateToken, jwtVerify, getRedirectUrl, b64DecodeUnicode, b64EncodeUnicode, generateUuid }

@@ -50,7 +50,7 @@ var fetchOneDoc = (collection, document) => {
 
 var setDoc = (collection, document, info, isMerge) => {
   const query = new Promise((resolve, reject) => {
-    db.collection(collection).doc(document).set(info, { merge: isMerge })
+    db.collection(collection).doc(document).set(info, { merge: isMerge || false })
     return resolve(true)
   })
     .catch(err => {
