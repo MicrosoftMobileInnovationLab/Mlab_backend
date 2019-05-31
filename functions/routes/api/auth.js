@@ -1,5 +1,5 @@
 const utils = require('./../../utils/userutils')
-const firestoreutils = require('./../../utils/fireStoreutils')
+const firestoreUtils = require('./../../utils/fireStoreutils')
 
 // TODO: Remove the following two dependencies and use firestoreUtils instead
 const firebase = require('firebase-admin')
@@ -17,7 +17,7 @@ module.exports = (app) => {
       timestamp: (new Date()).getTime(),
       count: 0
     }
-    return firestoreutils.setDoc('nonce', nonce, data).then(() => {
+    return firestoreUtils.setDoc('nonce', nonce, data).then(() => {
       let redirectUrl = utils.getRedirectUrl(nonce, returnUrl)
       return res.send(redirectUrl)
     }, () => {
@@ -62,8 +62,9 @@ module.exports = (app) => {
       })
       .then((docId) => {
         // Increase nonce count
-        firestoreutils.updateDoc('nonce', docId, { count: 1 })
+        return firestoreUtils.updateDoc('nonce', docId, { count: 1 })
       })
+      // TODO: Urgent - Add another .then() to add all groups(that the user belongs to) to decodeSSO/tokenInfo
       .then(() => {
         let token = utils.generateToken(decodedSSO)
         var data = {
@@ -72,7 +73,7 @@ module.exports = (app) => {
         }
         // console.log("New Token: ", token);
 
-        firestoreutils.setDoc('sessions', String(token), data)
+        firestoreUtils.setDoc('sessions', String(token), data)
         return token
       })
       .then((token) => {
