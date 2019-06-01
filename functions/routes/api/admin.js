@@ -1,5 +1,5 @@
-const utils = require('./../../utils/userUtils')
-const firestoreUtils = require('./../../utils/fireStoreUtils')
+const utils = require('@utils/userUtils')
+const firestoreUtils = require('@utils/fireStoreUtils')
 
 // TODO: Remove the following two dependencies and use firestoreUtils instead
 const firebase = require('firebase-admin')

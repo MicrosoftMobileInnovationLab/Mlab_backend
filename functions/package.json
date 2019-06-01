@@ -21,7 +21,8 @@
     "firebase-functions": "^2.3.1",
     "firebase-functions-test": "^0.1.6",
     "jsonwebtoken": "^8.5.1",
-    "jwt-decode": "^2.2.0"
+    "jwt-decode": "^2.2.0",
+    "module-alias": "^2.2.0"
   },
   "devDependencies": {
     "atob": "^2.1.2",
@@ -41,5 +42,8 @@
   "private": true,
   "engines": {
     "node": "8"
+  },
+  "_moduleAliases": {
+    "@utils": "utils"
   }
 }
