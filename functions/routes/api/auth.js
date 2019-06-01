@@ -64,15 +64,30 @@ module.exports = (app) => {
         // Increase nonce count
         return firestoreUtils.updateDoc('nonce', docId, { count: 1 })
       })
-      // TODO: Urgent - Add another .then() to add all groups(that the user belongs to) to decodeSSO/tokenInfo
       .then(() => {
+        var usn = decodedSSO.username
+        var groupsOfTheUser = []
+        return db.collection('groups').get().then(snapshot => {
+          if (snapshot.empty) { return groupsOfTheUser }
+          snapshot.forEach(doc => {
+            var userList = doc.data().userList
+            if (userList.includes(usn)) {
+              groupsOfTheUser.push(doc.data().groupName)
+            }
+          })
+          // console.log(groupsOfTheUser)
+          return { groups: groupsOfTheUser }
+        })
+      })
+      .then((groups) => {
+        Object.assign(decodedSSO, groups)
+        // console.log(decodedSSO)
         let token = utils.generateToken(decodedSSO)
         var data = {
           token,
           timestamp: (new Date()).getTime()
         }
         // console.log("New Token: ", token);
-
         firestoreUtils.setDoc('sessions', String(token), data)
         return token
       })
