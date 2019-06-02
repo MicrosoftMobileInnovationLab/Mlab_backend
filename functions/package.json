@@ -44,6 +44,8 @@
     "node": "8"
   },
   "_moduleAliases": {
-    "@utils": "utils"
+    "@utils": "utils",
+    "@middleware": "middleware",
+    "@root": ""
   }
 }

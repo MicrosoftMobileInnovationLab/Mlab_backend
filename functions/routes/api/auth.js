@@ -29,11 +29,6 @@ module.exports = (app) => {
      * Sign Up Endpoint
      */
   app.post('/api/v1/signin', (req, res) => {
-    try {
-      req.body = JSON.parse(req.body)
-    } catch (e) {
-      console.log(e)
-    }
     var sso = req.body['sso']
     var sig = req.body['sig']
     let decodedSSO = utils.verifySignature(sso, sig)

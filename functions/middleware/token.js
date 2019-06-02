@@ -1,4 +1,4 @@
-const Utils = require('./../userUtils')
+const utils = require('@utils/userUtils')
 const firebase = require('firebase-admin')
 const db = firebase.firestore()
 
@@ -12,8 +12,8 @@ var verifyToken = (req, res, next) => {
     })
   }
   token = token.trim()
-  var decodedToken = Utils.jwtVerify(token)
-
+  var decodedToken = utils.jwtVerify(token)
+  // console.log('Token: ' + token)
   return db.collection('sessions').doc(token).get()
     .then(doc => {
       if (!doc.exists || !decodedToken) {
@@ -23,8 +23,9 @@ var verifyToken = (req, res, next) => {
         })
       } else {
         // console.log(decodedToken);
+        req.token = decodedToken
         req.usn = decodedToken.username
-        req.role = doc.data().role || 'user'
+        req.groups = decodedToken.groups
         return next()
       }
     })
@@ -37,18 +38,24 @@ var verifyToken = (req, res, next) => {
     })
 }
 
-var requireRole = (role) => {
+var requireGroups = (requiredGroups) => {
   return (req, res, next) => {
     return verifyToken(req, res, () => {
-      if (req.role !== role) {
-        return res.status(403).send({
-          success: false,
-          message: 'Error: Forbidden request.'
-        })
+      for (var rg of requiredGroups) {
+        if (!req.groups.includes(rg)) {
+          return res.status(403).send({
+            success: false,
+            message: 'Error: Forbidden request.'
+          })
+        }
       }
       return next()
     })
   }
 }
 
-module.exports = { verifyToken, requireRole }
+var requireAdmin = () => {
+  return requireGroups(['admin'])
+}
+
+module.exports = { verifyToken, requireGroups, requireAdmin }

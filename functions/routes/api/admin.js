@@ -1,5 +1,6 @@
 const utils = require('@utils/userUtils')
 const firestoreUtils = require('@utils/fireStoreUtils')
+const token = require('@middleware/token')
 
 // TODO: Remove the following two dependencies and use firestoreUtils instead
 const firebase = require('firebase-admin')
@@ -9,13 +10,7 @@ module.exports = (app) => {
   /**
      *  POST a new group
      */
-  app.post('/api/v1/newGroup', (req, res) => {
-    // TODO: allow only to admins
-    try {
-      req.body = JSON.parse(req.body)
-    } catch (e) {
-      console.log(e)
-    }
+  app.post('/api/v1/newGroup', token.requireAdmin(), (req, res) => {
     var groupName = req.body.name
     var userList = req.body.users.split(',').map((element) => { return element.trim().toUpperCase() })
 

@@ -1,15 +1,9 @@
 const firebase = require('firebase-admin')
 const db = firebase.firestore()
+const token = require('@middleware/token')
 
 module.exports = (app) => {
-  app.post('/api/v1/addProject', (req, res) => {
-    // TODO: Verify the generated token.
-    try {
-      req.body = JSON.parse(req.body)
-    } catch (e) {
-      console.log(e)
-    }
-    console.log(req.body)
+  app.post('/api/v1/newProject', token.verifyToken, (req, res) => {
     var data = Object.assign({ isVerified: false }, {
       title: req.body.title || 'Unknown',
       domain: req.body.domain || 'Unknown domain',

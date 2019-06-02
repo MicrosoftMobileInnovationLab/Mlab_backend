@@ -3,7 +3,7 @@ const atob = require('atob')
 const btoa = require('btoa')
 const jwt = require('jsonwebtoken')
 const uuid = require('uuid/v1')
-var config = require('./../config')
+var config = require('@root/config')
 
 const redirectBaseUrl = config.redirectBaseUrl
 const appId = config.appId
@@ -47,6 +47,7 @@ const generateToken = (payload) => {
   return token
 }
 
+// TODO: use another secret key for JWT
 const jwtVerify = (token) => {
   return jwt.verify(token, secretkey, (err, decoded) => {
     if (decoded) { return decoded }

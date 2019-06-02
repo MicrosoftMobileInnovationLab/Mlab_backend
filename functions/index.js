@@ -16,6 +16,17 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(bodyParser.json())
 
+var myJSONparser = (req, res, next) => {
+  try {
+    req.body = JSON.parse(req.body)
+  } catch (e) {
+    console.log(e)
+  }
+  next()
+  // console.log(req.body)
+}
+app.use(myJSONparser)
+
 // Setting up routes
 require('./routes/index')(app)
 
