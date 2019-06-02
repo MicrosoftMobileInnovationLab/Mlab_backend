@@ -49,7 +49,7 @@ module.exports = (app) => {
         var projectList = []
         if (!snapshot.empty) {
           snapshot.forEach((doc) => {
-            projectList.push(doc.data)
+            projectList.push(Object.assign(doc.data(), { id: doc.id }))
           })
         }
         console.log(projectList)
