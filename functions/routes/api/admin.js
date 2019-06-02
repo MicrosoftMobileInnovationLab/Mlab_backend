@@ -8,8 +8,8 @@ const db = firebase.firestore()
 
 module.exports = (app) => {
   /**
-     *  POST a new group
-     */
+  *  POST a new group
+  */
   app.post('/api/v1/newGroup', token.requireAdmin(), (req, res) => {
     var groupName = req.body.name
     var userList = req.body.users.split(',').map((element) => { return element.trim().toUpperCase() })

@@ -20,7 +20,7 @@ var myJSONparser = (req, res, next) => {
   try {
     req.body = JSON.parse(req.body)
   } catch (e) {
-    console.log(e)
+    // console.log(e)
   }
   next()
   // console.log(req.body)

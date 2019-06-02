@@ -7,8 +7,8 @@ const db = firebase.firestore()
 
 module.exports = (app) => {
   /**
-     * GET redirect URL to Pesu Academy auth
-     */
+   * GET redirect URL to Pesu Academy auth
+   */
   app.get('/api/v1/ssoRedirectUrl', (req, res) => {
     let returnUrl = req.query.returnUrl
     let nonce = utils.generateUuid()
@@ -26,8 +26,8 @@ module.exports = (app) => {
   })
 
   /**
-     * Sign Up Endpoint
-     */
+   * Sign Up Endpoint
+   */
   app.post('/api/v1/signin', (req, res) => {
     var sso = req.body['sso']
     var sig = req.body['sig']
@@ -58,6 +58,10 @@ module.exports = (app) => {
       .then((docId) => {
         // Increase nonce count
         return firestoreUtils.updateDoc('nonce', docId, { count: 1 })
+      })
+      .then(() => {
+        // Add the user to users collection if not already in it
+        return firestoreUtils.setDoc('users', decodedSSO.username, { usn: decodedSSO.username, name: decodedSSO.name }, true)
       })
       .then(() => {
         var usn = decodedSSO.username
