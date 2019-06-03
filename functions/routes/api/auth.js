@@ -88,14 +88,17 @@ module.exports = (app) => {
         }
         // console.log("New Token: ", token);
         firestoreUtils.setDoc('sessions', String(token), data)
-        return token
+        return { token, groups }
       })
       .then((token) => {
-        return res.status(200).json({
-          success: true,
-          message: 'User signed in.',
-          token
-        })
+        return res.status(200).json(
+          Object.assign(
+            token,
+            {
+              success: true,
+              message: 'User signed in.'
+            })
+        )
       })
       .catch((error) => {
         // console.log(error);
